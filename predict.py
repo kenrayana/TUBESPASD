@@ -1,86 +1,105 @@
+import pickle
+import pandas as pd
+
+
 class PredictaMind:
 
-    # Constructor
-    def __init__(self, jam_tidur, aktivitas, mood):
+    def __init__(
+        self,
+        sleep_quality,
+        academic_performance,
+        study_load,
+        extracurricular_activity
+    ):
 
-        self.jam_tidur = jam_tidur
-        self.aktivitas = aktivitas
-        self.mood = mood
+        self.sleep_quality = sleep_quality
+        self.academic_performance = academic_performance
+        self.study_load = study_load
+        self.extracurricular_activity = extracurricular_activity
 
     # =========================
-    # PREDIKSI STRES
+    # PREDIKSI STRES (ML)
     # =========================
+
     def prediksi_stres(self):
 
-        score = 0
+        with open("model.pkl", "rb") as file:
+            model = pickle.load(file)
 
-        if self.jam_tidur < 5:
-            score += 40
+        with open("encoder.pkl", "rb") as file:
+            encoder = pickle.load(file)
 
-        if self.mood < 5:
-            score += 40
-
-        if self.aktivitas > 7:
-            score += 20
-
-        return score
-
-    # =========================
-    # KATEGORI STRES
-    # =========================
-    def kategori_stres(self):
-
-        score = self.prediksi_stres()
-
-        if score >= 70:
-            return "Tinggi"
-
-        elif score >= 40:
-            return "Sedang"
-
-        else:
-            return "Rendah"
-
-    # =========================
-    # PREDIKSI PRODUKTIVITAS
-    # =========================
-    def prediksi_produktivitas(self):
-
-        if self.jam_tidur >= 7 and self.mood >= 7:
-            return "Tinggi"
-
-        elif self.jam_tidur < 5 or self.mood < 5:
-            return "Rendah"
-
-        else:
-            return "Sedang"
-
-    # =========================
-    # DAILY READINESS SCORE
-    # =========================
-    def hitung_readiness(self):
-
-        score = (
-            self.jam_tidur * 10 +
-            self.mood * 5 +
-            self.aktivitas * 3
+        data = pd.DataFrame(
+            [[
+                self.sleep_quality,
+                self.academic_performance,
+                self.study_load,
+                self.extracurricular_activity
+            ]],
+            columns=[
+                "sleep_quality",
+                "academic_performance",
+                "study_load",
+                "extracurricular_activity"
+            ]
         )
 
-        if score > 100:
-            score = 100
+        hasil = model.predict(data)
 
-        return score
+        return encoder.inverse_transform(hasil)[0]
 
     # =========================
-    # PRODUCTIVITY FORECAST
+    # PRODUKTIVITAS (RULE-BASED)
     # =========================
-    def productivity_forecast(self):
 
-        if self.mood >= 8:
-            return "11 AM - 3 PM"
+    def prediksi_produktivitas(self):
 
-        elif self.mood >= 6:
-            return "9 AM - 12 PM"
+        score = (
+            self.sleep_quality
+            + self.academic_performance
+            + self.extracurricular_activity
+            - self.study_load
+        )
+
+        if score >= 15:
+            return "High"
+
+        elif score >= 10:
+            return "Moderate"
 
         else:
-            return "Disarankan istirahat lebih dulu"
+            return "Low"
+
+    # =========================
+    # READINESS SCORE
+    # =========================
+
+    def hitung_readiness(self):
+
+        readiness = (
+            (self.sleep_quality * 4)
+            + (self.academic_performance * 3)
+            + (self.extracurricular_activity * 2)
+            - (self.study_load * 2)
+        )
+
+        readiness = max(0, min(readiness, 100))
+
+        return readiness
+
+    # =========================
+    # REKOMENDASI WAKTU PRODUKTIF
+    # =========================
+
+    def productivity_forecast(self):
+
+        produktivitas = self.prediksi_produktivitas()
+
+        if produktivitas == "High":
+            return "08.00 - 12.00"
+
+        elif produktivitas == "Moderate":
+            return "13.00 - 16.00"
+
+        else:
+            return "17.00 - 20.00"
