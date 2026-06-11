@@ -1,8 +1,9 @@
 import streamlit as st
 from predict import PredictaMind
 
-# KONFIGURASI PAGE
-
+# =========================
+# PAGE CONFIG
+# =========================
 
 st.set_page_config(
     page_title="MindFlow",
@@ -20,85 +21,109 @@ st.caption("AI-Powered Mental Wellness Dashboard")
 st.divider()
 
 # =========================
-# QUICK CHECK-IN
+# USER INPUT
 # =========================
 
-st.subheader("📋 Quick Check-In")
+st.subheader("📋 Student Check-In")
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
-    jam_tidur = st.number_input(
-        "Jam Tidur",
-        min_value=0,
-        max_value=24,
-        value=7
-    )
 
-with col2:
-    aktivitas = st.slider(
-        "Aktivitas Harian",
-        1,
-        10,
+    sleep_quality = st.slider(
+        "😴 Sleep Quality",
+        min_value=1,
+        max_value=10,
         value=5
     )
 
-with col3:
-    mood = st.slider(
-        "Mood Harian",
-        1,
-        10,
-        value=7
+    academic_performance = st.slider(
+        "📚 Academic Performance",
+        min_value=1,
+        max_value=10,
+        value=5
+    )
+
+with col2:
+
+    study_load = st.slider(
+        "📝 Study Load",
+        min_value=1,
+        max_value=10,
+        value=5
+    )
+
+    extracurricular_activity = st.slider(
+        "🏃 Extracurricular Activity",
+        min_value=1,
+        max_value=10,
+        value=5
     )
 
 # =========================
-# BUTTON
+# ANALYZE BUTTON
 # =========================
 
 analyze = st.button("🔍 Analyze Now")
 
 # =========================
-# HASIL ANALISIS
+# ANALYSIS RESULT
 # =========================
 
 if analyze:
 
-    # Membuat object
     user = PredictaMind(
-        jam_tidur,
-        aktivitas,
-        mood
+        sleep_quality,
+        academic_performance,
+        study_load,
+        extracurricular_activity
     )
 
-    # =========================
-    # MEMANGGIL METHOD
-    # =========================
+    stress = user.prediksi_stres()
 
-    stress_score = user.prediksi_stres()
-
-    kategori_stres = user.kategori_stres()
-
-    produktivitas = user.prediksi_produktivitas()
+    productivity = user.prediksi_produktivitas()
 
     readiness = user.hitung_readiness()
 
     forecast = user.productivity_forecast()
 
-    # =========================
-    # DASHBOARD SECTION
-    # =========================
-
     st.divider()
 
-    colA, colB = st.columns(2)
+    # =========================
+    # METRICS
+    # =========================
 
-    # =========================
-    # DAILY READINESS
-    # =========================
+    colA, colB, colC = st.columns(3)
 
     with colA:
 
-        st.subheader("⚡ Daily Readiness")
+        st.subheader("🧘 Stress Level")
+
+        if stress == "High":
+            st.error(stress)
+
+        elif stress == "Moderate":
+            st.warning(stress)
+
+        else:
+            st.success(stress)
+
+    with colB:
+
+        st.subheader("📈 Productivity")
+
+        if productivity == "High":
+            st.success(productivity)
+
+        elif productivity == "Moderate":
+            st.warning(productivity)
+
+        else:
+            st.error(productivity)
+
+    with colC:
+
+        st.subheader("⚡ Readiness")
 
         st.metric(
             label="Readiness Score",
@@ -107,53 +132,17 @@ if analyze:
 
         st.progress(int(readiness))
 
-        if readiness >= 80:
-            st.success("Energy Level: High")
-
-        elif readiness >= 60:
-            st.warning("Energy Level: Medium")
-
-        else:
-            st.error("Energy Level: Low")
-
     # =========================
-    # STRESS METER
-    # =========================
-
-    with colB:
-
-        st.subheader("🧘 Stress Meter")
-
-        st.progress(int(stress_score))
-
-        st.metric(
-            label="Stress Score",
-            value=f"{stress_score}%"
-        )
-
-        st.write(f"Stress Level: **{kategori_stres}**")
-
-    # =========================
-    # PRODUKTIVITAS
+    # FORECAST
     # =========================
 
     st.divider()
 
-    st.subheader("📈 Productivity Forecast")
+    st.subheader("⏰ Productivity Forecast")
 
-    colC, colD = st.columns(2)
-
-    with colC:
-
-        st.info(
-            f"Produktivitas Hari Ini: {produktivitas}"
-        )
-
-    with colD:
-
-        st.success(
-            f"Optimal Productivity Time: {forecast}"
-        )
+    st.info(
+        f"Recommended Productive Time: {forecast}"
+    )
 
 # =========================
 # FOOTER
