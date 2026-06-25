@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 # Load dataset
-df = pd.read_csv("student_stress_dataset_no_decimals.csv")
+df = pd.read_csv("data/student_stress_dataset_no_decimals.csv")
 print(df.head())
 numerical_cols = [
     "sleep_quality",
