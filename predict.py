@@ -23,10 +23,10 @@ class PredictaMind:
 
     def prediksi_stres(self):
 
-        with open("model.pkl", "rb") as file:
+        with open("models/model.pkl", "rb") as file:
             model = pickle.load(file)
 
-        with open("encoder.pkl", "rb") as file:
+        with open("models/encoder.pkl", "rb") as file:
             encoder = pickle.load(file)
 
         data = pd.DataFrame(
