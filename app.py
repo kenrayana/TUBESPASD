@@ -20,78 +20,248 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-[data-testid="stAppViewContainer"]{
-    background-color:#F3F3F3;
+/* ============ GLOBAL THEME ============ */
+
+:root {
+    --bg-primary: #0B1120;
+    --bg-secondary: #111827;
+    --card-bg: #141B2D;
+
+    --border-primary: #7C3AED;
+    --border-secondary: #3B82F6;
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #A1A7B8;
 }
 
+/* Background halaman */
+
+[data-testid="stAppViewContainer"],
+.main,
+.block-container {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, label, span, div,
+.stMarkdown,
+.stText,
+.stRadio label {
+    color: var(--text-primary) !important;
+}
+
+.stCaption,
+small {
+    color: var(--text-secondary) !important;
+}
+            
 /* Readiness */
 .readiness-card{
-    background:linear-gradient(135deg,#5B8CFF,#76A8FF);
+    background:linear-gradient(
+        135deg,
+        #2563EB,
+        #7C3AED
+    );
+
     padding:35px;
     border-radius:25px;
+
     color:white;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.12);
+
+    border:none;
+
+    box-shadow:
+        0 0 30px rgba(59,130,246,0.35);
 }
 
 /* Card */
 .card{
-    background:white;
+    background:#131C31;
+    border:1px solid #334155;
     padding:25px;
     border-radius:20px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
-    text-align:center;
+    color:white;
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.2);
 }
 
 /* Forecast */
 .forecast-card{
-    background:white;
-    color:black;
+    background:#131C31;
+    color:white;
     padding:25px;
     border-radius:20px;
-    box-shadow:0px 3px 12px rgba(0,0,0,0.08);
+    border:1px solid #334155;
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.2);
     text-align:center;
 }
 
 /* Insight */
 .insight-card{
-    background:#ffffff;
-    color:#111111;
+    background:#131C31;
+
+    color:white;
+
     padding:25px;
+
     border-radius:20px;
+
     border-left:8px solid #4F8CFF;
-    box-shadow:0px 3px 12px rgba(0,0,0,0.08);
+
+    border-top:1px solid #334155;
+    border-right:1px solid #334155;
+    border-bottom:1px solid #334155;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.2);
 }
 html, body, [class*="css"]  {
-    color: #111111;
+    color: #F8FAFC;
 }
 
-h1, h2, h3, h4, h5, h6, p, label {
-    color: #111111 !important;
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF !important;
 }
 
-.input-card{
-    background:white;
-    border:1px solid #DCE3F0;
-    border-radius:15px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0px 2px 10px rgba(0,0,0,0.05);
+p, label, span {
+    color: #CBD5E1 !important;
+}
+.input-card {
+    background: var(--card-bg);
+
+    border: 2px solid var(--border-secondary);
+
+    border-radius: 18px;
+
+    padding: 16px 20px;
+
+    margin-bottom: 16px;
+
+    box-shadow: 0 0 15px rgba(59,130,246,0.15);
+
+    transition: all 0.3s ease;
+}
+
+.input-card:hover {
+    border-color: var(--border-primary);
+
+    box-shadow: 0 0 20px rgba(124,58,237,0.35);
+}
+
+/* Perbaikan radio horizontal agar terlihat bagus */
+
+[data-testid="stHorizontalBlock"] {
+    gap: 16px !important;
+    flex-wrap: nowrap !important;
+}
+
+[data-testid="stRadio"] label {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+}
+
+[data-testid="stRadio"] div[role="radiogroup"] {
+    flex-wrap: nowrap;
+    gap: 14px;
 }
             
+.how-card {
+    background: linear-gradient(180deg, #111827, #0F172A);
+    border: 2px solid var(--border-primary);
+    border-radius: 18px;
+    padding: 20px;
+
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+
+    color: var(--text-primary);
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.how-title{
+    color:white;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.num{
+    width:28px;
+    height:28px;
+
+    background:#7C3AED;
+
+    color:white;
+
+    border-radius:8px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:bold;
+}
+
+.content{
+    color:#CBD5E1;
+}
+
+.privacy{
+    margin-top:15px;
+    padding-top:10px;
+    border-top:1px solid #334155;
+    color:#94A3B8;
+    font-size:13px;
+}
+
+
+            
 .stButton > button{
-    background:#2563eb !important;
-    color:white !important;
-    border:none !important;
-    border-radius:12px !important;
-    height:55px !important;
-    font-size:18px !important;
-    font-weight:600 !important;
+    width:100%;
+    height:55px;
+
+    border:none;
+    border-radius:15px;
+
+    color:white;
+    font-weight:bold;
+    font-size:18px;
+
+    background:linear-gradient(
+        90deg,
+        #7C3AED,
+        #3B82F6
+    );
+
+    box-shadow:
+        0 0 15px rgba(124,58,237,0.4);
+
+    transition:all .3s ease;
 }
 
 .stButton > button:hover{
-    background:#1d4ed8 !important;
     transform:translateY(-2px);
+
+    box-shadow:
+        0 0 25px rgba(124,58,237,0.7);
+
+    background:linear-gradient(
+        90deg,
+        #8B5CF6,
+        #60A5FA
+    );
+}
+
+.stRadio label,
+.stMarkdown,
+.stText,
+div {
+    color:#F8FAFC !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -117,86 +287,87 @@ st.divider()
 # ==================================
 st.markdown("## 📋 Student Check-In")
 
-sidebar_col, main_col = st.columns([1,5])
+col_sidebar, col_form = st.columns([1.1, 3.9])
 
-with sidebar_col:
-
+# =========================
+# HOW IT WORKS
+# =========================
+with col_sidebar:
     st.markdown("""
-    <div class="input-card">
-        <h4>How it works</h4>
+<div class="how-card">
 
-        1. Fill your data
-        Answer each section based on your current condition.<br><br>
+<h3>💡 How it Works</h3>
 
-        2. Get insights
-        AI analyzes your input and generates a dashboard.<br><br>
+<div class="step">
+<strong>① Fill your data</strong><br>
+Answer each question based on your current condition.
+</div>
 
-        3. Improve your day
-        Use recommendations to make better decisions.<br><br>
+<div class="step">
+<strong>② Get insights</strong><br>
+AI analyzes your input and predicts your stress level.
+</div>
 
-        <hr>
+<div class="step">
+<strong>③ Improve your day</strong><br>
+Receive recommendations to maintain better mental wellness.
+</div>
 
-        🔒 Your data is private
-    </div>
-    """,
-    unsafe_allow_html=True)
+<div class="privacy">
+🔒 Your data is private
+</div>
 
-# ==========================
-# LEFT COLUMN
-# ==========================
-with main_col:
+</div>
+""", unsafe_allow_html=True)
+# =========================
+# FORM INPUT
+# =========================
+with col_form:
 
-    input_col1, input_col2 = st.columns(2)
+    left, right = st.columns(2)
 
-    with input_col1:
+    with left:
 
-        st.markdown('<div class="input-card">', unsafe_allow_html=True)
+        with st.container(border=True):
 
-        sleep_quality = st.radio(
-            "😴 Sleep Quality",
-            options=list(range(1,11)),
-            horizontal=True
-        )
+            sleep_quality = st.radio(
+                "😴 Sleep Quality",
+                options=list(range(1,11)),
+                horizontal=True,
+                key="sleep"
+            )
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        with st.container(border=True):
 
-        st.markdown('<div class="input-card">', unsafe_allow_html=True)
+            academic_performance = st.radio(
+                "📚 Academic Performance",
+                options=list(range(1,11)),
+                horizontal=True,
+                key="academic"
+            )
 
-        academic_performance = st.radio(
-            "📚 Academic Performance",
-            options=list(range(1,11)),
-            horizontal=True
-        )
+    with right:
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        with st.container(border=True):
 
-# ==========================
-# RIGHT COLUMN
-# ==========================
+            study_load_text = st.radio(
+                "📚 Study Load",
+                ["Light","Medium","Heavy"],
+                horizontal=True,
+                key="study"
+            )
 
-    with input_col2:
+        with st.container(border=True):
 
-        st.markdown('<div class="input-card">', unsafe_allow_html=True)
-
-        study_load_text = st.radio(
-            "📚 Study Load",
-            ["Light","Medium","Heavy"],
-            horizontal=True
-        )
-
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="input-card">', unsafe_allow_html=True)
-
-        extracurricular_activity = st.radio(
-            "🏃 Extracurricular Activity",
-            options=list(range(1,11)),
-            horizontal=True
-        )
-
-        st.markdown('</div>', unsafe_allow_html=True)
+            extracurricular_activity = st.radio(
+                "🏃 Extracurricular Activity",
+                options=list(range(1,11)),
+                horizontal=True,
+                key="extra"
+            )
 
     st.markdown("<br>", unsafe_allow_html=True)
+
 
    
 # ==========================
